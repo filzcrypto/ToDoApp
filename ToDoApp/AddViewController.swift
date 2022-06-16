@@ -21,7 +21,7 @@ class AddViewController: UIViewController {
     }
     
     @IBAction func createButton(_ sender: Any) {
-        if(titleTextField.text != nil && subtitleTextField.text != nil) {
+        if(titleTextField.text != "" && subtitleTextField.text != "") {
             if let data = UserDefaults.standard.value(forKey:"ToDoKey") as? Data {
                         let toDo = try? PropertyListDecoder().decode(Array<toDoList>.self, from: data)
                         listData = toDo ?? []
@@ -29,13 +29,16 @@ class AddViewController: UIViewController {
             let temp = toDoList(title: titleTextField.text ?? "", subtitle: subtitleTextField.text ?? "", description: descTextView.text ?? "")
             listData.append(temp)
             UserDefaults.standard.set(try? PropertyListEncoder().encode(listData), forKey:"ToDoKey")
+            let BlueVc =  UIStoryboard(name: "Main", bundle:nil).instantiateViewController(withIdentifier: "ViewController")
+            self.navigationController?.pushViewController(BlueVc, animated: true)
+        } else {
+            let refreshAlert = UIAlertController(title: "Error", message: "Fill the required", preferredStyle: UIAlertController.Style.alert)
+            refreshAlert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+            }))
+            present(refreshAlert, animated: true, completion: nil)
+
         }
         
-        let BlueVc =  UIStoryboard(name: "Main", bundle:nil).instantiateViewController(withIdentifier: "ViewController")
-
-                    self.navigationController?.pushViewController(BlueVc, animated: true)
-
-
     }
     
     /*
